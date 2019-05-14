@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack:///./src/scss/src/scss/style.scss"],"names":[],"mappings":"AAAA,KACI,gCAAoC,CAExC,2BAGY,SAAU","file":"./css/style.bundle.css","sourcesContent":["body{\n    font-family: 'Work Sans', sans-serif;\n}\n.container{\n    .content{\n        .title{\n            color: red;\n        }\n        .box{\n\n        }\n    }\n}"],"sourceRoot":""}
