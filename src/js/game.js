@@ -67,6 +67,7 @@ export default class Game {
                     this.isPaused = true;
 
                     setTimeout(() => {
+                        $(document).trigger('pause');     
                     }, this.interval);
                 }
             }

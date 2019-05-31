@@ -12,14 +12,11 @@ export default class View {
         $(document).on('enable', (e, data) => {
             this.enable(data.counter, data.num);
         });
-        $(document).on('disable', (e, counter) => {
+        $(document).on('disable', () => {
             this.disable();
         });
         $(document).on('start', () => {
             this.start();
-        });
-        $(document).on('restart', () => {
-            this.restart();
         });
         $(document).on('stop', (e, score) => {
             this.stop(score);
@@ -41,10 +38,6 @@ export default class View {
 
     start() {
         $(this.startButton).text('Stop');
-    }
-
-    restart() {
-
     }
 
     pause() {
