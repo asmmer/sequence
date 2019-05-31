@@ -27,8 +27,9 @@ export default class Controller {
                 dataAction: '[data-action="figure:set"]',
                 callback: (e) => {
                     $(e.target).css('opacity', '.3');
+                    console.log(view.figures);
                     if (this.game.isStarted && this.game.isPaused) {
-                        this.game.getPlayerSequence($(this.game.figures).index(e.target));
+                        this.game.getPlayerSequence($(view.figures).index(e.target));
                     }
                 }
             },

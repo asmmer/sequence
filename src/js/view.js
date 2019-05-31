@@ -9,8 +9,8 @@ export default class View {
         this.startButton = $('#button_start');
         this.tipTitle = $('.tip-title');
 
-        $(document).on('enable', (e, counter) => {
-            this.enable(counter);
+        $(document).on('enable', (e, data) => {
+            this.enable(data.counter, data.num);
         });
         $(document).on('disable', (e, counter) => {
             this.disable();
@@ -34,9 +34,9 @@ export default class View {
         this.figures.css('opacity', '.3');
     }
 
-    enable(counter) {
+    enable(counter, num) {
         $(this.figures[counter]).css('opacity', '1');
-        $(this.tipTitle).text(`${counter}`);
+        $(this.tipTitle).text(`${num}`);
     }
 
     start() {

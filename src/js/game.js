@@ -55,8 +55,10 @@ export default class Game {
                     $(document).trigger('disable');     
                 }, this.interval / 2);
 
-
-                $(document).trigger('enable', this.sequence[counter]);
+                $(document).trigger('enable',{
+                    counter: this.sequence[counter],
+                    num: counter + 1
+                });
 
                 counter++;
 
