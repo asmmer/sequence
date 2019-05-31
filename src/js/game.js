@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-class Game {
+export default class Game {
 
     constructor() {
 
@@ -105,5 +105,3 @@ class Game {
         return Math.floor(Math.random() * (max - min)) + min;
     }
 }
-
-export default new Game();
