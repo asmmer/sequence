@@ -3,7 +3,7 @@ import Game from './game.js';
 
 export default class Controller {
 
-    constructor (model, view){
+    constructor(model, view) {
 
         this.game = new Game();
 
@@ -58,12 +58,12 @@ export default class Controller {
                 }
             }
         ]
-        
+
         this.initDataActions(config);
 
     }
 
-    initDataActions(config){
+    initDataActions(config) {
         for (let event in config) {
             $(document).on(config[event].eventName, config[event].dataAction, config[event].callback);
         }

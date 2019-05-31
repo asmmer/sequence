@@ -3,11 +3,6 @@ import $ from 'jquery';
 export default class Game {
 
     constructor() {
-
-        this.box = $('.box');
-        this.figures = this.box.children('.item');
-        this.startButton = $('#button_start');
-        this.tipTitle = $('.tip-title');
         this.interval = 1000;
     }
 
@@ -16,7 +11,7 @@ export default class Game {
         this.sequence = '';
 
         for (let i = 0; i < length + 1; i++){
-            const figure_num = this.getRandomInt(0, this.figures.length);
+            const figure_num = this.getRandomInt(0, 4);
             this.sequence += String(figure_num);
         }
     }
@@ -42,41 +37,34 @@ export default class Game {
 
     start() {
 
-        // Set start values.   
-        this.startButton.text('Stop');
+        $(document).trigger('start');
         this.isStarted = true;
         this.isPaused = false;
-        this.sequence = ''; // Sequence string.
-        this.playerSequence = ''; // Player sequence string.
-
-        // Game logic.     
+        this.sequence = '';
+        this.playerSequence = '';
+  
         let counter = 0;
 
         this.generateSequence(this.sequence.length);
 
         this.timer = setInterval(() => {
 
-
-
             if (!this.isPaused) {
 
-
                 setTimeout(() => {
-                    this.figures.css('opacity', '.3');           
+                    $(document).trigger('disable');     
                 }, this.interval / 2);
 
-                $(this.figures[this.sequence[counter]]).css('opacity', '1');
+
+                $(document).trigger('enable', this.sequence[counter]);
 
                 counter++;
-
-                this.tipTitle.text(`${counter}`);
 
                 if (counter == this.sequence.length) {
                     counter = 0;
                     this.isPaused = true;
 
                     setTimeout(() => {
-                        this.tipTitle.text(`Your move`);
                     }, this.interval);
                 }
             }
@@ -89,15 +77,10 @@ export default class Game {
         // Reset start values.     
         clearInterval(this.timer);
 
-        this.figures.css('opacity', '.3');       
-        this.tipTitle.text(`Press start`);
-        this.startButton.text('Start');
+        $(document).trigger('stop', this.sequence.length - 1);
+
         this.isStarted = false;
         this.isPaused = true;
-
-        $('.modal').fadeIn(150).css('display', 'flex');
-        $('.score-text').text(`${this.sequence.length - 1}`);
-
         this.sequence = '';
     }
 
