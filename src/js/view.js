@@ -4,52 +4,81 @@ export default class View {
 
     constructor() {
 
-        this.box = $('.box');
-        this.figures = this.box.children('.item');
-        this.startButton = $('#button_start');
-        this.tipTitle = $('.tip-title');
+        this.box = document.querySelector('.box');
+        this.figures = this.box.querySelectorAll(':scope > .item');
+        this.startButton = document.querySelector('#button_start');
+        this.tipTitle = document.querySelector('.tip-title');
+        this.scoreText = document.querySelector('.score-text');
 
-        $(document).on('enable', (e, data) => {
-            this.enable(data.counter, data.num);
-        });
-        $(document).on('disable', () => {
-            this.disable();
-        });
-        $(document).on('start', () => {
-            this.start();
-        });
-        $(document).on('stop', (e, score) => {
-            this.stop(score);
-        });
-        $(document).on('pause', () => {
-            this.pause();
-        });
+        const actionsConfig = [
+            {
+                actionName: 'enable',
+                callback: (e) => {
+                    const { counter, num } = e.detail;
+                    this.enable(counter, num);
+                }
+            },
+            {
+                actionName: 'disable',
+                callback: () => {
+                    this.disable();
+                }
+            },
+            {
+                actionName: 'start',
+                callback: () => {
+                    this.start();
+                }
+            },
+            {
+                actionName: 'stop',
+                callback: (e) => {
+                    const { score } = e.detail;
+                    this.stop(score);
+                }
+            },
+            {
+                actionName: 'pause',
+                callback: () => {
+                    this.pause();
+                }
+            },
+        ]
 
+        this.initActions(actionsConfig);
+    }
+
+    initActions(actionsConfig = []) {
+        for (let key in actionsConfig) {
+            const action = actionsConfig[key];
+            const { actionName, callback } = action;
+            document.addEventListener(actionName, callback);
+        }
     }
 
     disable() {
-        this.figures.css('opacity', '.3');
+        this.figures.forEach(figure => figure.style.opacity = '.3');
     }
 
     enable(counter, num) {
-        $(this.figures[counter]).css('opacity', '1');
-        $(this.tipTitle).text(`${num}`);
+        this.figures[counter].style.opacity = '1';
+        this.tipTitle.textContent = `${num}`;
     }
 
     start() {
-        $(this.startButton).text('Stop');
+        this.startButton.textContent = 'Stop';
     }
 
     pause() {
-        this.tipTitle.text(`Your move`);
+        this.disable();
+        this.tipTitle.textContent = 'Your move';
     }
 
     stop(score) {
-        this.figures.css('opacity', '.3');
-        this.tipTitle.text(`Press start`);
-        this.startButton.text('Start');
-
-        $('.score-text').text(`${score}`);
+        this.disable();
+        this.tipTitle.textContent = 'Press start';
+        this.startButton.textContent = 'Start';
+        this.scoreText.textContent = `${score}`;
 
         $('.modal').fadeIn(150).css('display', 'flex');
     }
