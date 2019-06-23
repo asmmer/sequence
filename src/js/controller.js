@@ -1,72 +1,74 @@
 import $ from 'jquery';
-import Game from './game.js';
 
 export default class Controller {
 
     constructor(model, view) {
-
-        this.game = new Game();
 
         this.model = model;
         this.view = view;
 
         const config = [
             {
-                eventName: 'click',
-                dataAction: '[data-action="game:start"]',
+                type: 'click',
+                selector: '[data-action="model:start"]',
                 callback: (e) => {
-                    if (!this.game.isStarted) {
-                        this.game.start();
+                    if (!this.model.isStarted) {
+                        this.model.start();
                     } else {
-                        this.game.stop();
+                        this.model.stop();
                     }
                 }
             },
             {
-                eventName: 'click',
-                dataAction: '[data-action="figure:set"]',
+                type: 'click',
+                selector: '[data-action="figure:set"]',
                 callback: (e) => {
-                    $(e.target).css('opacity', '.3');
-                    if (this.game.isStarted && this.game.isPaused) {
-                        this.game.getPlayerSequence($(view.figures).index(e.target));
+                    const { target } = e;
+                    target.style.opacity = '.3';
+                    if (this.model.isStarted && this.model.isPaused) {
+                        const index = Array.prototype.slice.call(view.figures).indexOf(target);          
+                        this.model.getPlayerSequence(index);
                     }
                 }
             },
             {
-                eventName: 'mousemove',
-                dataAction: '[data-action="figure:set"]',
+                type: 'mousemove',
+                selector: '[data-action="figure:set"]',
                 callback: (e) => {
-                    if (this.game.isStarted && this.game.isPaused) {
-                        $(e.target).css('opacity', '1');
+                    if (this.model.isStarted && this.model.isPaused) {
+                        const { target } = e;
+                        target.style.opacity = '1';
                     }
                 }
             },
             {
-                eventName: 'mouseout',
-                dataAction: '[data-action="figure:set"]',
+                type: 'mouseout',
+                selector: '[data-action="figure:set"]',
                 callback: (e) => {
-                    if (this.game.isStarted && this.game.isPaused) {
-                        $(e.target).css('opacity', '.3');
+                    if (this.model.isStarted && this.model.isPaused) {
+                        const { target } = e;
+                        target.style.opacity = '.3';
                     }
                 }
             },
             {
-                eventName: 'click',
-                dataAction: '[data-action="modal:close"]',
+                type: 'click',
+                selector: '[data-action="modal:close"]',
                 callback: (e) => {
                     $('.modal').fadeOut(150);
                 }
             }
         ]
 
-        this.initDataActions(config);
-
+        this.initActions(config);
     }
 
-    initDataActions(config) {
-        for (let event in config) {
-            $(document).on(config[event].eventName, config[event].dataAction, config[event].callback);
-        }
+    initActions(config) {
+        config.forEach(event => {
+            const { type, selector, callback} = event;
+            const targets = document.querySelectorAll(selector);
+            targets.forEach(target => target.addEventListener(type, callback));
+        });
     }
 
 } 
