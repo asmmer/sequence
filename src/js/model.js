@@ -5,6 +5,7 @@ export default class Model {
 
     generateSequence(length){
         this.sequence = '';
+        this.isRightSequence = false;
 
         for (let i = 0; i < length + 1; i++){
             const figureNum = this.getRandomInt(0, 4);
@@ -13,6 +14,9 @@ export default class Model {
     }
 
     getPlayerSequence(figureNum) {
+        if (this.isRightSequence) {
+            return;
+        }
         this.playerSequence += String(figureNum);
         if (this.checkPlayerSequence()){
             document.dispatchEvent(new CustomEvent('set-tip', {
@@ -22,6 +26,7 @@ export default class Model {
                 }
             }));  
             if (this.playerSequence.length == this.sequence.length){ // Go to new level.
+                this.isRightSequence = true;
                 setTimeout(() => {
                     this.playerSequence = '';
                     this.isPaused = false;
