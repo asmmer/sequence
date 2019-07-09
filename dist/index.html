@@ -2,36 +2,39 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.bundle.css">
-    <title>Sequence</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.bundle.css">
+  <title>Sequence</title>
 </head>
 
 <body>
-    <nav>
-        <h1>Sequence</h1>
-    </nav>
-    <main>
-        <div class="tip-title">Press start</div>
-        <div class="box">
-            <div class="item red" data-action="figure:set"></div>
-            <div class="item blue" data-action="figure:set"></div>
-            <div class="item green" data-action="figure:set"></div>
-            <div class="item yellow" data-action="figure:set"></div>
-        </div>
-        <div class="button" data-action="model:start" id="button_start">Start</div>
-    </main>
-    <div class="modal">
-            <div class="modal-container">
-                <div class="modal-text">Your score<div class="score-text"></div>
-                </div>
-                <div class="button" data-action="modal:close">Close</div>
-            </div>
+  <nav>
+    <h1>Sequence</h1>
+  </nav>
+  <main>
+    <div class="tips">
+      <div class="tip-header">Press start</div>
+      <div class="tip"></div>
     </div>
-    <script src="js/bundle.js"></script>
+    <div class="box">
+      <button class="item red" data-action="figure:set" disabled></button>
+      <button class="item blue" data-action="figure:set" disabled></button>
+      <button class="item green" data-action="figure:set" disabled></button>
+      <button class="item yellow" data-action="figure:set" disabled></button>
+    </div>
+    <button class="button" data-action="model:start" id="button_start">Start</button>
+  </main>
+  <div class="modal">
+    <div class="modal-container">
+      <div class="modal-text">Your score<div class="score-text"></div>
+      </div>
+      <button class="button" data-action="modal:close">Close</button>
+    </div>
+  </div>
+  <script src="js/bundle.js"></script>
 </body>
 
 </html>

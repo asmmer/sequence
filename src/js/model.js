@@ -1,32 +1,48 @@
 export default class Model {
-
     constructor() {
         this.interval = 1000;
     }
 
     generateSequence(length){
-
         this.sequence = '';
 
         for (let i = 0; i < length + 1; i++){
-            const figure_num = this.getRandomInt(0, 4);
-            this.sequence += String(figure_num);
+            const figureNum = this.getRandomInt(0, 4);
+            this.sequence += String(figureNum);
         }
     }
 
-    getPlayerSequence(figure_num) {
-
-        this.playerSequence += String(figure_num);
-
+    getPlayerSequence(figureNum) {
+        this.playerSequence += String(figureNum);
         if (this.checkPlayerSequence()){
+            document.dispatchEvent(new CustomEvent('set-tip', {
+                detail: {
+                    val1: this.playerSequence.length,
+                    val2: this.sequence.length
+                }
+            }));  
             if (this.playerSequence.length == this.sequence.length){ // Go to new level.
-                this.playerSequence = '';
-                this.isPaused = false;
-                this.generateSequence(this.sequence.length);
+                setTimeout(() => {
+                    this.playerSequence = '';
+                    this.isPaused = false;
+                    this.generateSequence(this.sequence.length);
+                }, this.interval);
             }
         } else {
             this.stop();
         }
+
+    }
+
+    setTip(val1, val2) {
+        setTimeout(() => {
+            document.dispatchEvent(new CustomEvent('set-tip', {
+                detail: {
+                    val1,
+                    val2
+                }
+            }));   
+        }, this.interval);
     }
 
     checkPlayerSequence() {
@@ -34,7 +50,6 @@ export default class Model {
     }
 
     start() {
-        
         document.dispatchEvent(new Event('start'));
 
         this.isStarted = true;
@@ -47,9 +62,7 @@ export default class Model {
         this.generateSequence(this.sequence.length);
 
         this.timer = setInterval(() => {
-
             if (!this.isPaused) {
-
                 setTimeout(() => {
                     document.dispatchEvent(new Event('disable'));    
                 }, this.interval / 2);
@@ -57,13 +70,20 @@ export default class Model {
                 document.dispatchEvent(new CustomEvent('enable', {
                     detail: {
                         counter: this.sequence[counter],
-                        num: counter + 1
                     }
                 }));
+                document.dispatchEvent(new CustomEvent('set-tip', {
+                    detail: {
+                        val1: counter + 1,
+                        val2: this.sequence.length
+                    }
+                }));  
 
                 counter++;
 
                 if (counter == this.sequence.length) {
+                    this.setTip(0, counter);
+
                     counter = 0;
                     this.isPaused = true;
 
@@ -76,9 +96,7 @@ export default class Model {
         }, this.interval);
     }
 
-    stop() {
-
-        // Reset start values.     
+    stop() { 
         clearInterval(this.timer);
 
         document.dispatchEvent(new CustomEvent('stop', {

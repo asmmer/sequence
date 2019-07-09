@@ -1,27 +1,26 @@
 import $ from 'jquery';
 
 export default class View {
-
     constructor() {
-
         this.box = document.querySelector('.box');
         this.figures = this.box.querySelectorAll(':scope > .item');
         this.startButton = document.querySelector('#button_start');
-        this.tipTitle = document.querySelector('.tip-title');
+        this.tipHeader = document.querySelector('.tip-header');
+        this.tip = document.querySelector('.tip');
         this.scoreText = document.querySelector('.score-text');
 
         const actionsConfig = [
             {
                 actionName: 'enable',
                 callback: (e) => {
-                    const { counter, num } = e.detail;
-                    this.enable(counter, num);
+                    const { counter } = e.detail;
+                    this.fadeIn(counter);
                 }
             },
             {
                 actionName: 'disable',
                 callback: () => {
-                    this.disable();
+                    this.fadeOut();
                 }
             },
             {
@@ -43,6 +42,13 @@ export default class View {
                     this.pause();
                 }
             },
+            {
+                actionName: 'set-tip',
+                callback: (e) => {
+                    const { val1, val2 } = e.detail;
+                    this.setTip(val1, val2);
+                }
+            }
         ]
 
         this.initActions(actionsConfig);
@@ -56,13 +62,18 @@ export default class View {
         }
     }
 
-    disable() {
-        this.figures.forEach(figure => figure.style.opacity = '.3');
+    setTip(val1, val2) {
+        this.tip.textContent = `${val1} / ${val2}`;
     }
 
-    enable(counter, num) {
+    fadeOut() {
+        this.figures.forEach(figure => figure.removeAttribute('style'));
+    }
+
+    fadeIn(counter) {
         this.figures[counter].style.opacity = '1';
-        this.tipTitle.textContent = `${num}`;
+        this.figures.forEach(figure => figure.disabled = true);
+        this.tipHeader.textContent = 'Showing...';
     }
 
     start() {
@@ -70,13 +81,19 @@ export default class View {
     }
 
     pause() {
-        this.disable();
-        this.tipTitle.textContent = 'Your move';
+        this.fadeOut();
+        this.figures.forEach(figure => {
+            figure.disabled = false;
+            figure.blur();
+        });
+        this.tipHeader.textContent = 'Your move';
     }
 
     stop(score) {
-        this.disable();
-        this.tipTitle.textContent = 'Press start';
+        this.fadeOut();
+        this.figures.forEach(figure => figure.disabled = true);
+        this.tipHeader.textContent = 'Press start';
+        this.tip.textContent = null;
         this.startButton.textContent = 'Start';
         this.scoreText.textContent = `${score}`;
 

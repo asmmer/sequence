@@ -1,9 +1,7 @@
 import $ from 'jquery';
 
 export default class Controller {
-
     constructor(model, view) {
-
         this.model = model;
         this.view = view;
 
@@ -24,30 +22,9 @@ export default class Controller {
                 selector: '[data-action="figure:set"]',
                 callback: (e) => {
                     const { target } = e;
-                    target.style.opacity = '.3';
                     if (this.model.isStarted && this.model.isPaused) {
-                        const index = Array.prototype.slice.call(view.figures).indexOf(target);          
+                        const index = Array.prototype.slice.call(view.figures).indexOf(target);
                         this.model.getPlayerSequence(index);
-                    }
-                }
-            },
-            {
-                type: 'mousemove',
-                selector: '[data-action="figure:set"]',
-                callback: (e) => {
-                    if (this.model.isStarted && this.model.isPaused) {
-                        const { target } = e;
-                        target.style.opacity = '1';
-                    }
-                }
-            },
-            {
-                type: 'mouseout',
-                selector: '[data-action="figure:set"]',
-                callback: (e) => {
-                    if (this.model.isStarted && this.model.isPaused) {
-                        const { target } = e;
-                        target.style.opacity = '.3';
                     }
                 }
             },
@@ -65,10 +42,9 @@ export default class Controller {
 
     initActions(config) {
         config.forEach(event => {
-            const { type, selector, callback} = event;
+            const { type, selector, callback } = event;
             const targets = document.querySelectorAll(selector);
             targets.forEach(target => target.addEventListener(type, callback));
         });
     }
-
 } 
