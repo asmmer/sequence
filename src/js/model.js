@@ -69,7 +69,8 @@ export default class Model {
 
                 document.dispatchEvent(new CustomEvent('enable', {
                     detail: {
-                        counter: this.sequence[counter],
+                        id: this.sequence[counter],
+                        number: counter,
                     }
                 }));
                 document.dispatchEvent(new CustomEvent('set-tip', {

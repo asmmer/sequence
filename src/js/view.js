@@ -13,8 +13,8 @@ export default class View {
             {
                 actionName: 'enable',
                 callback: (e) => {
-                    const { counter } = e.detail;
-                    this.fadeIn(counter);
+                    const { id, number } = e.detail;
+                    this.fadeIn(id, number);
                 }
             },
             {
@@ -67,11 +67,15 @@ export default class View {
     }
 
     fadeOut() {
-        this.figures.forEach(figure => figure.removeAttribute('style'));
+        this.figures.forEach(figure => {
+            figure.removeAttribute('style');
+            figure.textContent = null;
+        });
     }
 
-    fadeIn(counter) {
-        this.figures[counter].style.opacity = '1';
+    fadeIn(id, number) {
+        this.figures[id].style.opacity = '1';
+        this.figures[id].textContent = number + 1;
         this.figures.forEach(figure => figure.disabled = true);
         this.tipHeader.textContent = 'Showing...';
     }
