@@ -66,7 +66,7 @@ main {
             border: 5px solid transparent;
             opacity: .3;
             outline: none;
-            transition: all 0.1s ease-in-out;
+            transition: border .1s ease-in-out, opacity .1s ease-in-out, transform .1s ease-in-out;
 
             &:disabled {
                 border: 5px solid transparent;
@@ -149,7 +149,7 @@ main {
     border-radius: 15px;
     text-align: center;
     border: 1px solid $title_color;
-    transition: all 0.15s ease-in-out;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, transform .15s ease-in-out;
     background-color: white;
     outline: none;
 

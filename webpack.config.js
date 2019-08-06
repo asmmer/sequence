@@ -46,11 +46,6 @@ module.exports = {
         use: ExtractTextPlugin.extract({
           use: [{
               loader: "css-loader",
-              options: {
-                sourceMap: true,
-                minimize: true,
-                url: false
-              }
             },
             {
               loader: "sass-loader",
