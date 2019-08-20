@@ -10,7 +10,9 @@
     "watch": "webpack --mode development --watch",
     "start": "webpack-dev-server --mode development --open",
     "beautify": "html dist/*.html --indent-size 2",
-    "clear": "del-cli dist"
+    "clear": "del-cli dist",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "jquery": "^3.3.1"
@@ -23,6 +25,7 @@
     "css-loader": "^3.1.0",
     "del-cli": "^1.1.0",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "gh-pages": "^2.1.1",
     "html-cli": "^1.0.0",
     "html-webpack-plugin": "^3.2.0",
     "node-sass": "^4.8.3",

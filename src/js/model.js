@@ -3,11 +3,11 @@ export default class Model {
         this.interval = 1000;
     }
 
-    generateSequence(length){
+    generateSequence(length) {
         this.sequence = '';
         this.isRightSequence = false;
 
-        for (let i = 0; i < length + 1; i++){
+        for (let i = 0; i < length + 1; i++) {
             const figureNum = this.getRandomInt(0, 4);
             this.sequence += String(figureNum);
         }
@@ -18,14 +18,14 @@ export default class Model {
             return;
         }
         this.playerSequence += String(figureNum);
-        if (this.checkPlayerSequence()){
+        if (this.checkPlayerSequence()) {
             document.dispatchEvent(new CustomEvent('set-tip', {
                 detail: {
                     val1: this.playerSequence.length,
                     val2: this.sequence.length
                 }
-            }));  
-            if (this.playerSequence.length == this.sequence.length){ // Go to new level.
+            }));
+            if (this.playerSequence.length == this.sequence.length) { // Go to new level.
                 this.isRightSequence = true;
                 setTimeout(() => {
                     this.playerSequence = '';
@@ -46,12 +46,12 @@ export default class Model {
                     val1,
                     val2
                 }
-            }));   
+            }));
         }, this.interval);
     }
 
     checkPlayerSequence() {
-        return this.playerSequence === this.sequence.substr(0, this.playerSequence.length) ;
+        return this.playerSequence === this.sequence.substr(0, this.playerSequence.length);
     }
 
     start() {
@@ -61,7 +61,7 @@ export default class Model {
         this.isPaused = false;
         this.sequence = '';
         this.playerSequence = '';
-  
+
         let counter = 0;
 
         this.generateSequence(this.sequence.length);
@@ -69,7 +69,7 @@ export default class Model {
         this.timer = setInterval(() => {
             if (!this.isPaused) {
                 setTimeout(() => {
-                    document.dispatchEvent(new Event('disable'));    
+                    document.dispatchEvent(new Event('disable'));
                 }, this.interval / 2);
 
                 document.dispatchEvent(new CustomEvent('enable', {
@@ -83,7 +83,7 @@ export default class Model {
                         val1: counter + 1,
                         val2: this.sequence.length
                     }
-                }));  
+                }));
 
                 counter++;
 
@@ -94,7 +94,7 @@ export default class Model {
                     this.isPaused = true;
 
                     setTimeout(() => {
-                        document.dispatchEvent(new Event('pause'));     
+                        document.dispatchEvent(new Event('pause'));
                     }, this.interval);
                 }
             }
@@ -102,7 +102,7 @@ export default class Model {
         }, this.interval);
     }
 
-    stop() { 
+    stop() {
         clearInterval(this.timer);
 
         document.dispatchEvent(new CustomEvent('stop', {
