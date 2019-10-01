@@ -22,7 +22,7 @@ const htmlPlugins = generateHtmlPlugins('./src/html/views');
 
 module.exports = {
   entry: [
-    './src/js/index.js',
+    './src/js/index.ts',
     './src/scss/style.scss'
   ],
   output: {
@@ -30,15 +30,14 @@ module.exports = {
   },
   devtool: "source-map",
   module: {
-    rules: [{
-        test: /\.js$/,
-        include: path.resolve(__dirname, 'src/js'),
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: 'env'
-          }
-        }
+    rules: [
+      {
+        test: /\.ts(x?)$/,
+        use: [
+            {
+                loader: "ts-loader"
+            }
+        ]
       },
       {
         test: /\.(sass|scss)$/,
