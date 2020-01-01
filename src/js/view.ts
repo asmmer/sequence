@@ -1,18 +1,26 @@
-import $ from 'jquery';
+import * as $ from "jquery";
 
+interface IAction {
+    actionName: string,
+    callback: EventListenerOrEventListenerObject
+}
+
+/**
+ * View class.
+ */
 export default class View {
-    constructor() {
-        this.box = document.querySelector('.box');
-        this.figures = this.box.querySelectorAll(':scope > .item');
-        this.startButton = document.querySelector('#button_start');
-        this.tipHeader = document.querySelector('.tip-header');
-        this.tip = document.querySelector('.tip');
-        this.scoreText = document.querySelector('.score-text');
+    readonly box: HTMLDivElement = document.querySelector('.box');
+    readonly figures: NodeListOf<HTMLButtonElement> = this.box.querySelectorAll(':scope > .item');
+    readonly startButton: HTMLButtonElement = document.querySelector('#button_start');
+    readonly tipHeader: HTMLDivElement = document.querySelector('.tip-header');
+    readonly tip: HTMLDivElement = document.querySelector('.tip');
+    readonly scoreText: HTMLDivElement = document.querySelector('.score-text');
 
-        const actionsConfig = [
+    constructor() {
+        const actionsConfig: Array<IAction> = [
             {
                 actionName: 'enable',
-                callback: (e) => {
+                callback: (e: CustomEvent) => {
                     const { id, number } = e.detail;
                     this.fadeIn(id, number);
                 }
@@ -31,7 +39,7 @@ export default class View {
             },
             {
                 actionName: 'stop',
-                callback: (e) => {
+                callback: (e: CustomEvent) => {
                     const { score } = e.detail;
                     this.stop(score);
                 }
@@ -44,7 +52,7 @@ export default class View {
             },
             {
                 actionName: 'set-tip',
-                callback: (e) => {
+                callback: (e: CustomEvent) => {
                     const { val1, val2 } = e.detail;
                     this.setTip(val1, val2);
                 }
@@ -54,37 +62,37 @@ export default class View {
         this.initActions(actionsConfig);
     }
 
-    initActions(actionsConfig = []) {
+    initActions(actionsConfig: Array<IAction> = []): void {
         for (let key in actionsConfig) {
             const action = actionsConfig[key];
-            const { actionName, callback } = action;
+            const { actionName, callback }: IAction = action;
             document.addEventListener(actionName, callback);
         }
     }
 
-    setTip(val1, val2) {
+    setTip(val1: number, val2: number): void {
         this.tip.textContent = `${val1} / ${val2}`;
     }
 
-    fadeOut() {
+    fadeOut(): void {
         this.figures.forEach(figure => {
             figure.removeAttribute('style');
             figure.textContent = null;
         });
     }
 
-    fadeIn(id, number) {
+    fadeIn(id: number, number: string): void {
         this.figures[id].style.opacity = '1';
         this.figures[id].textContent = number + 1;
         this.figures.forEach(figure => figure.disabled = true);
         this.tipHeader.textContent = 'Showing...';
     }
 
-    start() {
+    start(): void {
         this.startButton.textContent = 'Stop';
     }
 
-    pause() {
+    pause(): void {
         this.fadeOut();
         this.figures.forEach(figure => {
             figure.disabled = false;
@@ -93,7 +101,7 @@ export default class View {
         this.tipHeader.textContent = 'Your move';
     }
 
-    stop(score) {
+    stop(score: number): void {
         this.fadeOut();
         this.figures.forEach(figure => figure.disabled = true);
         this.tipHeader.textContent = 'Press start';

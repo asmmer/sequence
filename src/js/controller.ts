@@ -1,15 +1,30 @@
-import $ from 'jquery';
+import * as $ from "jquery";
 
+import Model from './model';
+import View from './view';
+
+interface IEvent {
+    type: string,
+    selector: string,
+    callback: EventListenerOrEventListenerObject
+}
+
+/**
+ * Class for model and view control.
+ */
 export default class Controller {
-    constructor(model, view) {
+    readonly model: Model;
+    readonly view: View;
+
+    constructor(model: Model, view: View) {
         this.model = model;
         this.view = view;
 
-        const config = [
+        const config: Array<IEvent> = [
             {
                 type: 'click',
                 selector: '[data-action="model:start"]',
-                callback: (e) => {
+                callback: () => {
                     if (!this.model.isStarted) {
                         this.model.start();
                     } else {
@@ -20,8 +35,7 @@ export default class Controller {
             {
                 type: 'click',
                 selector: '[data-action="figure:set"]',
-                callback: (e) => {
-                    const { target } = e;
+                callback: ({ target }: Event) => {
                     if (this.model.isStarted && this.model.isPaused) {
                         const index = Array.prototype.slice.call(view.figures).indexOf(target);
                         this.model.getPlayerSequence(index);
@@ -31,7 +45,7 @@ export default class Controller {
             {
                 type: 'click',
                 selector: '[data-action="modal:close"]',
-                callback: (e) => {
+                callback: () => {
                     $('.modal').fadeOut(150);
                 }
             }
@@ -40,9 +54,9 @@ export default class Controller {
         this.initActions(config);
     }
 
-    initActions(config) {
+    initActions(config: Array<IEvent>): void {
         config.forEach(event => {
-            const { type, selector, callback } = event;
+            const { type, selector, callback }: IEvent = event;
             const targets = document.querySelectorAll(selector);
             targets.forEach(target => target.addEventListener(type, callback));
         });

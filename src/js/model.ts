@@ -1,9 +1,18 @@
+/**
+ * Model class.
+ */
 export default class Model {
-    constructor() {
-        this.interval = 1000;
-    }
+    private sequence: string = '';
+    private playerSequence: string = '';
 
-    generateSequence(length) {
+    isStarted: boolean;
+    isPaused: boolean;
+    private isRightSequence: boolean;
+
+    private timer: any;
+    private interval: number = 1000;
+
+    generateSequence(length: number): void {
         this.sequence = '';
         this.isRightSequence = false;
 
@@ -13,11 +22,13 @@ export default class Model {
         }
     }
 
-    getPlayerSequence(figureNum) {
+    getPlayerSequence(figureNum: number): void {
         if (this.isRightSequence) {
             return;
         }
-        this.playerSequence += String(figureNum);
+
+        this.playerSequence += `${figureNum}`;
+
         if (this.checkPlayerSequence()) {
             document.dispatchEvent(new CustomEvent('set-tip', {
                 detail: {
@@ -39,7 +50,7 @@ export default class Model {
 
     }
 
-    setTip(val1, val2) {
+    setTip(val1: number, val2: number): void {
         setTimeout(() => {
             document.dispatchEvent(new CustomEvent('set-tip', {
                 detail: {
@@ -50,11 +61,11 @@ export default class Model {
         }, this.interval);
     }
 
-    checkPlayerSequence() {
+    checkPlayerSequence(): boolean {
         return this.playerSequence === this.sequence.substr(0, this.playerSequence.length);
     }
 
-    start() {
+    start(): void {
         document.dispatchEvent(new Event('start'));
 
         this.isStarted = true;
@@ -62,7 +73,7 @@ export default class Model {
         this.sequence = '';
         this.playerSequence = '';
 
-        let counter = 0;
+        let counter: number = 0;
 
         this.generateSequence(this.sequence.length);
 
@@ -102,7 +113,7 @@ export default class Model {
         }, this.interval);
     }
 
-    stop() {
+    stop(): void {
         clearInterval(this.timer);
 
         document.dispatchEvent(new CustomEvent('stop', {
@@ -116,7 +127,7 @@ export default class Model {
         this.sequence = '';
     }
 
-    getRandomInt(min, max) {
+    getRandomInt(min: number, max: number): number {
         return Math.floor(Math.random() * (max - min)) + min;
     }
 }
