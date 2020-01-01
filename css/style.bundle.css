@@ -11,7 +11,7 @@ body {
   display: flex;
   flex-direction: column; }
 
-nav {
+.game-title {
   flex: 0 0 auto;
   display: flex;
   flex-direction: column;
@@ -27,18 +27,18 @@ main {
   flex-direction: column;
   justify-content: center;
   align-items: center; }
-  main .tips {
+  main .tips-container {
     font-weight: 900;
     font-size: 18px;
     margin: 10px;
     text-align: center;
     height: 72px; }
-  main .box {
+  main .box-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     width: 250px; }
-    main .box .item {
+    main .box-container .box-item {
       font-size: 36px;
       font-weight: 900;
       color: black;
@@ -50,23 +50,23 @@ main {
       opacity: .3;
       outline: none;
       transition: border .1s ease-in-out, opacity .1s ease-in-out, transform .1s ease-in-out; }
-      main .box .item:disabled {
+      main .box-container .box-item:disabled {
         border: 5px solid transparent;
         opacity: .3; }
-      main .box .item:hover:not([disabled]) {
+      main .box-container .box-item:hover:not([disabled]) {
         border: 5px solid #353535;
         opacity: 1;
         cursor: pointer; }
-      main .box .item:active {
+      main .box-container .box-item:active {
         transform: scale(0.85);
         opacity: 1; }
-    main .box .red {
+    main .box-container .red {
       background-color: #ff3030; }
-    main .box .blue {
+    main .box-container .blue {
       background-color: #3067ff; }
-    main .box .green {
+    main .box-container .green {
       background-color: #41ff30; }
-    main .box .yellow {
+    main .box-container .yellow {
       background-color: #fbff00; }
 
 .modal {
@@ -93,14 +93,17 @@ main {
     border-radius: 15px;
     padding: 15px; }
     .modal .modal-container .modal-text {
-      height: 90%; }
-      .modal .modal-container .modal-text .score-text {
-        font-size: 10vw;
-        font-weight: bold;
-        text-align: center;
-        margin: 10%; }
+      flex: 1 0 auto; }
+      .modal .modal-container .modal-text .score-text__wrapper {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center; }
+        .modal .modal-container .modal-text .score-text__wrapper .score-text {
+          font-size: 120px;
+          font-weight: bold; }
 
-.button {
+.base-button {
   cursor: pointer;
   margin: 10px;
   padding: 10px;
@@ -111,10 +114,10 @@ main {
   transition: color .15s ease-in-out, background-color .15s ease-in-out, transform .15s ease-in-out;
   background-color: white;
   outline: none; }
-  .button:hover {
+  .base-button:hover {
     background-color: #353535;
     color: white; }
-  .button:active {
+  .base-button:active {
     transform: scale(0.9); }
 
 /*# sourceMappingURL=style.bundle.css.map*/
