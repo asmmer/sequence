@@ -1,18 +1,17 @@
-import * as $ from "jquery";
-
 import Model from './model';
 import View from './view';
 
-interface IEvent {
-    type: string,
-    selector: string,
-    callback: EventListenerOrEventListenerObject
+// @ts-ignore
+import GameEvent from "./game-event.ts";
+
+import * as $ from "jquery";
+
+interface IController {
+    model: Model;
+    view: View;
 }
 
-/**
- * Class for model and view control.
- */
-export default class Controller {
+export default class Controller implements IController {
     readonly model: Model;
     readonly view: View;
 
@@ -20,8 +19,8 @@ export default class Controller {
         this.model = model;
         this.view = view;
 
-        const config: Array<IEvent> = [
-            {
+        const gameEvents: GameEvent[] = [
+            new GameEvent({
                 type: 'click',
                 selector: '[data-action="model:start"]',
                 callback: () => {
@@ -31,32 +30,32 @@ export default class Controller {
                         this.model.stop();
                     }
                 }
-            },
-            {
+            }),
+            new GameEvent({
                 type: 'click',
                 selector: '[data-action="figure:set"]',
-                callback: ({ target }: Event) => {
+                callback: ({ target }: any) => {
                     if (this.model.isStarted && this.model.isPaused) {
                         const index = Array.prototype.slice.call(view.figures).indexOf(target);
                         this.model.getPlayerSequence(index);
                     }
                 }
-            },
-            {
+            }),
+            new GameEvent({
                 type: 'click',
                 selector: '[data-action="modal:close"]',
                 callback: () => {
                     $('.modal').fadeOut(150);
                 }
-            }
+            })
         ]
 
-        this.initActions(config);
+        this.initGameEvents(gameEvents);
     }
 
-    initActions(config: Array<IEvent>): void {
-        config.forEach(event => {
-            const { type, selector, callback }: IEvent = event;
+    private initGameEvents(gameEvents: GameEvent[]): void {
+        gameEvents.forEach(event => {
+            const { type, selector, callback }: GameEvent = event;
             const targets = document.querySelectorAll(selector);
             targets.forEach(target => target.addEventListener(type, callback));
         });

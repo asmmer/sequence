@@ -11,28 +11,34 @@
 </head>
 
 <body>
-    <nav>
+    <nav class="game-title">
         <h1>Sequence</h1>
     </nav>
     <main>
-        <div class="tips">
-            <div class="tip-header">Press start</div>
-            <div class="tip"></div>
-        </div>
-        <div class="box">
-            <button class="item red" data-action="figure:set" disabled></button>
-            <button class="item blue" data-action="figure:set" disabled></button>
-            <button class="item green" data-action="figure:set" disabled></button>
-            <button class="item yellow" data-action="figure:set" disabled></button>
-        </div>
-        <button class="button" data-action="model:start" id="button_start">Start</button>
+        <section class="tips-container">
+            <div class="tips-container__tip-header">Press start</div>
+            <div class="tips-container__tip"></div>
+        </section>
+        <section class="box-container">
+            <button class="box-item red" data-action="figure:set" disabled></button>
+            <button class="box-item blue" data-action="figure:set" disabled></button>
+            <button class="box-item green" data-action="figure:set" disabled></button>
+            <button class="box-item yellow" data-action="figure:set" disabled></button>
+        </section>
+        <button class="base-button" data-action="model:start" id="button_start">Start</button>
     </main>
     <div class="modal">
-            <div class="modal-container">
-                <div class="modal-text">Your score<div class="score-text"></div>
+        <div class="modal-container">
+            <div class="modal-text">
+                <div class="modal-title">
+                    Your score
                 </div>
-                <button class="button" data-action="modal:close">Close</button>
+                <div class="score-text__wrapper">
+                    <div class="score-text"></div>
+                </div>
             </div>
+            <button class="base-button" data-action="modal:close">Close</button>
+        </div>
     </div>
     <script src="./js/bundle.js"></script>
 </body>

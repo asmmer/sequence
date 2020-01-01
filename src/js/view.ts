@@ -1,77 +1,65 @@
+// @ts-ignore
+import GameAction from "./game-action.ts";
+
 import * as $ from "jquery";
 
-interface IAction {
-    actionName: string,
-    callback: EventListenerOrEventListenerObject
-}
-
-/**
- * View class.
- */
 export default class View {
-    readonly box: HTMLDivElement = document.querySelector('.box');
-    readonly figures: NodeListOf<HTMLButtonElement> = this.box.querySelectorAll(':scope > .item');
+    readonly box: HTMLDivElement = document.querySelector('.box-container');
+    readonly figures: NodeListOf<HTMLButtonElement> = this.box.querySelectorAll(':scope > .box-item');
     readonly startButton: HTMLButtonElement = document.querySelector('#button_start');
-    readonly tipHeader: HTMLDivElement = document.querySelector('.tip-header');
-    readonly tip: HTMLDivElement = document.querySelector('.tip');
+    readonly tipHeader: HTMLDivElement = document.querySelector('.tips-container__tip-header');
+    readonly tip: HTMLDivElement = document.querySelector('.tips-container__tip');
     readonly scoreText: HTMLDivElement = document.querySelector('.score-text');
 
     constructor() {
-        const actionsConfig: Array<IAction> = [
-            {
-                actionName: 'enable',
-                callback: (e: CustomEvent) => {
+        const actions: GameAction[] = [
+            new GameAction({
+                name: 'enable',
+                callback: (e: any) => {
                     const { id, number } = e.detail;
                     this.fadeIn(id, number);
                 }
-            },
-            {
-                actionName: 'disable',
-                callback: () => {
-                    this.fadeOut();
-                }
-            },
-            {
-                actionName: 'start',
-                callback: () => {
-                    this.start();
-                }
-            },
-            {
-                actionName: 'stop',
-                callback: (e: CustomEvent) => {
+            }),
+            new GameAction({
+                name: 'disable',
+                callback: () => this.fadeOut()
+            }),
+            new GameAction({
+                name: 'start',
+                callback: () => this.start()
+            }),
+            new GameAction({
+                name: 'stop',
+                callback: (e: any) => {
                     const { score } = e.detail;
                     this.stop(score);
                 }
-            },
-            {
-                actionName: 'pause',
-                callback: () => {
-                    this.pause();
-                }
-            },
-            {
-                actionName: 'set-tip',
-                callback: (e: CustomEvent) => {
+            }),
+            new GameAction({
+                name: 'pause',
+                callback: () => this.pause()
+            }),
+            new GameAction({
+                name: 'set-tip',
+                callback: (e: any) => {
                     const { val1, val2 } = e.detail;
                     this.setTip(val1, val2);
                 }
-            }
-        ]
+            })
+        ];
 
-        this.initActions(actionsConfig);
+        this.initGameActions(actions);
     }
 
-    initActions(actionsConfig: Array<IAction> = []): void {
-        for (let key in actionsConfig) {
-            const action = actionsConfig[key];
-            const { actionName, callback }: IAction = action;
-            document.addEventListener(actionName, callback);
-        }
+    initGameActions(gameActions: GameAction[]): void {
+        gameActions.forEach(gameAction => {
+            const { name, callback }: GameAction = gameAction;
+            document.addEventListener(name, callback);
+        });
     }
 
-    setTip(val1: number, val2: number): void {
-        this.tip.textContent = `${val1} / ${val2}`;
+    setTip(firstValue: number, secondValue: number): void {
+        this.tip.textContent = `${firstValue} / ${secondValue}`;
     }
 
     fadeOut(): void {

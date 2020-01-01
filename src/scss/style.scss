@@ -1,8 +1,4 @@
-$title_color: #353535;
-$red_color: #ff3030;
-$blue_color: #3067ff;
-$green_color: #41ff30;
-$yellow_color: #fbff00;
+@import './colors.scss';
 
 * {
     cursor: default;
@@ -20,7 +16,7 @@ body {
     flex-direction: column;
 }
 
-nav {
+.game-title {
     flex: 0 0 auto;
     display: flex;
     flex-direction: column;
@@ -40,7 +36,7 @@ main {
     justify-content: center;
     align-items: center;
 
-    .tips {
+    .tips-container {
         font-weight: 900;
         font-size: 18px;
         margin: 10px;
@@ -48,14 +44,14 @@ main {
         height: 72px;
     }
 
-    .box {
+    .box-container {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
 
         width: 250px;
 
-        .item {
+        .box-item {
             font-size: 36px;
             font-weight: 900;
             color: black;
@@ -129,19 +125,24 @@ main {
         padding: 15px;
 
         .modal-text {
-            height: 90%;
+            flex: 1 0 auto;
 
-            .score-text {
-                font-size: 10vw;
-                font-weight: bold;
-                text-align: center;
-                margin: 10%;
+            .score-text__wrapper {
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .score-text {
+                    font-size: 120px;
+                    font-weight: bold;
+                }
             }
         }
     }
 }
 
-.button {
+.base-button {
     cursor: pointer;
     margin: 10px;
     padding: 10px;

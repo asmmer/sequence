@@ -1,6 +1,3 @@
-/**
- * Model class.
- */
 export default class Model {
     private sequence: string = '';
     private playerSequence: string = '';
