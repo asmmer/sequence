@@ -1,17 +1,7 @@
-<https://asmmer.github.io/sequence>
-# Игра “Последовательность”
-Нажмите на кнопку “Start” и наблюдайте в каком порядке будут подсвечиваться те или иные цветные блоки. Ваша задача - повторить эту последовательность, нажимая на блоки.
-
-Проект написан с использованием JavaScript | jQuery.
-
-# The game "Sequence"
+https://asmmer.github.io/sequence
+# The Game "Sequence"
 Click on the “Start” button and observe in which order certain colored blocks will be highlighted. Your task is to repeat this sequence by clicking on the blocks.
 
-The project is written using JavaScript | jQuery.
-
-
-
-
-
-
-
+Technology stack:
+- JavaScript;
+- jQuery (only animation).
