@@ -1,5 +1,5 @@
 export enum GameState {
-    Stoped,
+    Stopped,
     Started,
     Paused
 }
@@ -10,14 +10,11 @@ export default class Model {
 
     private sequence: string = '';
     private playerSequence: string = '';
-
-    isStarted: boolean;
-    isPaused: boolean;
     private isRightSequence: boolean;
 
     private timer: any;
 
-    public gameState: GameState = GameState.Stoped;
+    public gameState: GameState = GameState.Stopped;
 
     generateSequence(length: number): void {
         this.sequence = '';
@@ -36,25 +33,25 @@ export default class Model {
 
         this.playerSequence += `${figureNum}`;
 
-        if (this.checkPlayerSequence()) {
+        if (this.isValidSequence()) {
             document.dispatchEvent(new CustomEvent('set-tip', {
                 detail: {
                     currentLength: this.playerSequence.length,
                     wholeLength: this.sequence.length
                 }
             }));
-            if (this.playerSequence.length == this.sequence.length) { // Go to new level.
+
+            if (this.playerSequence.length === this.sequence.length) { // Go to new level.
                 this.isRightSequence = true;
                 setTimeout(() => {
                     this.playerSequence = '';
-                    this.isPaused = false;
+                    this.gameState = GameState.Started;
                     this.generateSequence(this.sequence.length);
                 }, this.INTERVAL);
             }
         } else {
             this.stop();
         }
-
     }
 
     setTip(currentLength: number, wholeLength: number): void {
@@ -68,15 +65,14 @@ export default class Model {
         }, this.INTERVAL);
     }
 
-    checkPlayerSequence(): boolean {
+    isValidSequence(): boolean {
         return this.playerSequence === this.sequence.substr(0, this.playerSequence.length);
     }
 
     start(): void {
         document.dispatchEvent(new Event('start'));
 
-        this.isStarted = true;
-        this.isPaused = false;
+        this.gameState = GameState.Started;
         this.sequence = '';
         this.playerSequence = '';
 
@@ -85,7 +81,7 @@ export default class Model {
         this.generateSequence(this.sequence.length);
 
         this.timer = setInterval(() => {
-            if (!this.isPaused) {
+            if (this.gameState === GameState.Started) {
                 setTimeout(() => {
                     document.dispatchEvent(new Event('disable'));
                 }, this.INTERVAL / 2);
@@ -109,7 +105,7 @@ export default class Model {
                     this.setTip(0, counter);
 
                     counter = 0;
-                    this.isPaused = true;
+                    this.gameState = GameState.Paused;
 
                     setTimeout(() => {
                         document.dispatchEvent(new Event('pause'));
@@ -129,8 +125,8 @@ export default class Model {
             }
         }));
 
-        this.isStarted = false;
-        this.isPaused = true;
+        this.gameState = GameState.Stopped;
+
         this.sequence = '';
     }
 

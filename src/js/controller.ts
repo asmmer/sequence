@@ -1,4 +1,5 @@
-import Model, { GameState } from './model';
+// @ts-ignore
+import Model, { GameState } from './model.ts';
 import View from './view';
 
 // @ts-ignore
@@ -24,10 +25,10 @@ export default class Controller implements IController {
                 type: 'click',
                 selector: '[data-action="model:start"]',
                 callback: () => {
-                    if (!this.model.isStarted) {
-                        this.model.start();
-                    } else {
-                        this.model.stop();
+                    switch (this.model.gameState) {
+                        case GameState.Stopped: 
+                        case GameState.Paused: this.model.start(); break;
+                        case GameState.Started: this.model.stop(); break;
                     }
                 }
             }),
@@ -35,7 +36,7 @@ export default class Controller implements IController {
                 type: 'click',
                 selector: '[data-action="figure:set"]',
                 callback: ({ target }: any) => {
-                    if (this.model.isStarted && this.model.isPaused) {
+                    if (this.model.gameState === GameState.Paused) {
                         const index = Array.prototype.slice.call(view.figures).indexOf(target);
                         this.model.getPlayerSequence(index);
                     }
