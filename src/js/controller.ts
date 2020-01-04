@@ -1,4 +1,4 @@
-import Model from './model';
+import Model, { GameState } from './model';
 import View from './view';
 
 // @ts-ignore

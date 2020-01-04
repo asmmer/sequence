@@ -1,4 +1,13 @@
-export default class Model {
+export enum GameState {
+    Stoped,
+    Started,
+    Paused
+}
+
+export default class Model {   
+    readonly BOXES_AMOUNT: number = 4;
+    readonly INTERVAL: number = 1000;
+
     private sequence: string = '';
     private playerSequence: string = '';
 
@@ -7,14 +16,15 @@ export default class Model {
     private isRightSequence: boolean;
 
     private timer: any;
-    private interval: number = 1000;
+
+    public gameState: GameState = GameState.Stoped;
 
     generateSequence(length: number): void {
         this.sequence = '';
         this.isRightSequence = false;
 
         for (let i = 0; i < length + 1; i++) {
-            const figureNum = this.getRandomInt(0, 4);
+            const figureNum = this.getRandomInt(0, this.BOXES_AMOUNT);
             this.sequence += String(figureNum);
         }
     }
@@ -29,8 +39,8 @@ export default class Model {
         if (this.checkPlayerSequence()) {
             document.dispatchEvent(new CustomEvent('set-tip', {
                 detail: {
-                    val1: this.playerSequence.length,
-                    val2: this.sequence.length
+                    currentLength: this.playerSequence.length,
+                    wholeLength: this.sequence.length
                 }
             }));
             if (this.playerSequence.length == this.sequence.length) { // Go to new level.
@@ -39,7 +49,7 @@ export default class Model {
                     this.playerSequence = '';
                     this.isPaused = false;
                     this.generateSequence(this.sequence.length);
-                }, this.interval);
+                }, this.INTERVAL);
             }
         } else {
             this.stop();
@@ -47,15 +57,15 @@ export default class Model {
 
     }
 
-    setTip(val1: number, val2: number): void {
+    setTip(currentLength: number, wholeLength: number): void {
         setTimeout(() => {
             document.dispatchEvent(new CustomEvent('set-tip', {
                 detail: {
-                    val1,
-                    val2
+                    currentLength,
+                    wholeLength
                 }
             }));
-        }, this.interval);
+        }, this.INTERVAL);
     }
 
     checkPlayerSequence(): boolean {
@@ -78,7 +88,7 @@ export default class Model {
             if (!this.isPaused) {
                 setTimeout(() => {
                     document.dispatchEvent(new Event('disable'));
-                }, this.interval / 2);
+                }, this.INTERVAL / 2);
 
                 document.dispatchEvent(new CustomEvent('enable', {
                     detail: {
@@ -88,8 +98,8 @@ export default class Model {
                 }));
                 document.dispatchEvent(new CustomEvent('set-tip', {
                     detail: {
-                        val1: counter + 1,
-                        val2: this.sequence.length
+                        currentLength: counter + 1,
+                        wholeLength: this.sequence.length
                     }
                 }));
 
@@ -103,11 +113,11 @@ export default class Model {
 
                     setTimeout(() => {
                         document.dispatchEvent(new Event('pause'));
-                    }, this.interval);
+                    }, this.INTERVAL);
                 }
             }
 
-        }, this.interval);
+        }, this.INTERVAL);
     }
 
     stop(): void {

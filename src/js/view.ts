@@ -42,8 +42,8 @@ export default class View {
             new GameAction({
                 name: 'set-tip',
                 callback: (e: any) => {
-                    const { val1, val2 } = e.detail;
-                    this.setTip(val1, val2);
+                    const { currentLength, wholeLength } = e.detail;
+                    this.setTip(currentLength, wholeLength);
                 }
             })
         ];
@@ -58,8 +58,8 @@ export default class View {
         });
     }
 
-    setTip(firstValue: number, secondValue: number): void {
-        this.tip.textContent = `${firstValue} / ${secondValue}`;
+    setTip(currentLength: number, wholeLength: number): void {
+        this.tip.textContent = `${currentLength} / ${wholeLength}`;
     }
 
     fadeOut(): void {
